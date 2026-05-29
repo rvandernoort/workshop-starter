@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Poppins, Roboto } from "next/font/google";
+import Image from "next/image";
 import "./globals.css";
 import { NavLinks } from "./_components/NavLinks";
 
@@ -38,9 +39,13 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <header className="w-full bg-hw-header text-hw-off-white">
           <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6">
-            <span className="font-display text-lg font-semibold tracking-tight">
-              Home<span className="hw-gradient-text">Wizard</span>
-            </span>
+            <Image
+              src="/homewizard_logo.webp"
+              alt="HomeWizard"
+              height={28}
+              width={140}
+              priority
+            />
             <NavLinks />
           </div>
         </header>
