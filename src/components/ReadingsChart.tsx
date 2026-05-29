@@ -17,8 +17,8 @@ export type ChartReading = {
 };
 
 const KINDS = [
-  { key: "electricity", label: "Electricity", unit: "kWh", color: "#f59e0b" },
-  { key: "gas", label: "Gas", unit: "m3", color: "#3b82f6" },
+  { key: "electricity", label: "Electricity", unit: "kWh", color: "#20F29B" },
+  { key: "gas", label: "Gas", unit: "m3", color: "#f59e0b" },
   { key: "water", label: "Water", unit: "m3", color: "#06b6d4" },
 ] as const;
 
@@ -32,14 +32,14 @@ export default function ReadingsChart({ readings }: { readings: ChartReading[] }
         return (
           <div
             key={key}
-            className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+            className="rounded-xl border border-hw-border bg-hw-header p-4"
           >
-            <h3 className="mb-3 text-sm font-medium">
+            <h3 className="mb-3 text-sm font-medium text-hw-off-white">
               {label} ({unit})
             </h3>
             <ResponsiveContainer width="100%" height={180}>
               <LineChart data={data} margin={{ top: 4, right: 8, bottom: 4, left: 8 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e4e4e7" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#CABBE740" />
                 <XAxis
                   dataKey="readAt"
                   tickFormatter={(s) =>
@@ -48,10 +48,21 @@ export default function ReadingsChart({ readings }: { readings: ChartReading[] }
                       day: "numeric",
                     })
                   }
-                  tick={{ fontSize: 11 }}
+                  tick={{ fontSize: 11, fill: "#FBF9FF" }}
                 />
-                <YAxis domain={["auto", "auto"]} tick={{ fontSize: 11 }} width={60} />
+                <YAxis
+                  domain={["auto", "auto"]}
+                  tick={{ fontSize: 11, fill: "#FBF9FF" }}
+                  width={60}
+                />
                 <Tooltip
+                  contentStyle={{
+                    background: "#151318",
+                    border: "1px solid #CABBE7",
+                    borderRadius: "8px",
+                  }}
+                  labelStyle={{ color: "#FBF9FF" }}
+                  itemStyle={{ color: "#FBF9FF" }}
                   labelFormatter={(s) => new Date(s).toLocaleDateString()}
                   formatter={(v) => [`${String(v)} ${unit}`, label]}
                 />

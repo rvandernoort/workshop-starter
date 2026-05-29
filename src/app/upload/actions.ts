@@ -1,5 +1,7 @@
 "use server";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 const EXPECTED_HEADER = "read_at,kind,value,unit";
@@ -9,13 +11,11 @@ function fail(message: string): never {
 }
 
 export async function importReadings(formData: FormData): Promise<void> {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) redirect("/login");
+
   const file = formData.get("file");
   if (!(file instanceof File) || file.size === 0) fail("No file selected.");
-
-  const user = await prisma.user.findUnique({
-    where: { email: "demo@homewizard.local" },
-  });
-  if (!user) fail("Demo user not found. Run: npm run db:seed");
 
   const text = await file.text();
   const lines = text.trim().split("\n");
@@ -34,7 +34,7 @@ export async function importReadings(formData: FormData): Promise<void> {
       skipped++;
       continue;
     }
-    rows.push({ readAt: parsedDate, kind, value: parsedValue, unit, userId: user.id });
+    rows.push({ readAt: parsedDate, kind, value: parsedValue, unit, userId: session.user.id });
   }
 
   if (rows.length === 0) fail(`No valid rows found (${skipped} skipped).`);
