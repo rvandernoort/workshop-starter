@@ -1,3 +1,6 @@
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 function formatPrice(cents: number) {
@@ -8,9 +11,10 @@ function formatPrice(cents: number) {
 }
 
 export default async function Shop() {
-  const products = await prisma.product.findMany({
-    orderBy: { name: "asc" },
-  });
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) redirect("/login");
+
+  const products = await prisma.product.findMany({ orderBy: { name: "asc" } });
 
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-12 sm:py-16">
