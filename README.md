@@ -32,10 +32,7 @@ Version numbers matter less than a working setup. Pick the install path for your
 Identical on macOS, Linux, and Windows (PowerShell, Git Bash, or WSL):
 
 ```
-cd project
 npm install
-npx prisma migrate dev --name init
-npx prisma db seed
 npm run dev
 ```
 
