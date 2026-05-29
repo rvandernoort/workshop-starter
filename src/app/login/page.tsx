@@ -37,9 +37,9 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-sm flex-col items-center justify-center px-6">
-      <div className="w-full rounded-lg border border-zinc-200 p-8 dark:border-zinc-800">
-        <h1 className="mb-6 text-2xl font-semibold tracking-tight">
+    <main className="mx-auto w-full max-w-sm px-6 py-24">
+      <div className="w-full rounded-3xl border border-hw-border bg-hw-header p-8">
+        <h1 className="mb-6 font-display text-2xl font-semibold tracking-tight text-hw-off-white">
           {mode === "signin" ? "Sign in" : "Create account"}
         </h1>
 
@@ -51,7 +51,7 @@ export default function LoginPage() {
               onChange={(e) => setName(e.target.value)}
               placeholder="Name"
               required
-              className="rounded-md border border-zinc-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:focus:ring-zinc-100"
+              className="rounded-xl border border-hw-border bg-hw-dark px-3 py-2 text-sm text-hw-off-white placeholder:text-hw-border/60 outline-none focus:ring-2 focus:ring-[#20F29B]"
             />
           )}
           <input
@@ -60,7 +60,7 @@ export default function LoginPage() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             required
-            className="rounded-md border border-zinc-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:focus:ring-zinc-100"
+            className="rounded-xl border border-hw-border bg-hw-dark px-3 py-2 text-sm text-hw-off-white placeholder:text-hw-border/60 outline-none focus:ring-2 focus:ring-[#20F29B]"
           />
           <input
             type="password"
@@ -68,17 +68,17 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             required
-            className="rounded-md border border-zinc-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:focus:ring-zinc-100"
+            className="rounded-xl border border-hw-border bg-hw-dark px-3 py-2 text-sm text-hw-off-white placeholder:text-hw-border/60 outline-none focus:ring-2 focus:ring-[#20F29B]"
           />
 
           {error && (
-            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+            <p className="text-sm text-red-400">{error}</p>
           )}
 
           <button
             type="submit"
             disabled={pending}
-            className="mt-1 rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900"
+            className="mt-1 rounded-xl bg-gradient-to-r from-[#20F29B] to-[#02DACE] px-4 py-2 text-sm font-semibold text-hw-dark disabled:opacity-50"
           >
             {pending ? "..." : mode === "signup" ? "Sign up" : "Sign in"}
           </button>
@@ -87,7 +87,7 @@ export default function LoginPage() {
         <button
           type="button"
           onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setError(""); }}
-          className="mt-4 text-sm text-zinc-500 underline underline-offset-4 hover:text-zinc-700 dark:text-zinc-400"
+          className="mt-4 text-sm text-hw-off-white/70 hover:text-hw-off-white transition-colors"
         >
           {mode === "signin" ? "No account? Sign up" : "Already have an account? Sign in"}
         </button>

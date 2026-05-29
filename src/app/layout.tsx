@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
 import { NavLinks } from "./_components/NavLinks";
+import { HeaderAuth } from "./_components/HeaderAuth";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -49,7 +50,10 @@ export default function RootLayout({
                 priority
               />
             </Link>
-            <NavLinks />
+            <div className="flex items-center gap-6">
+              <NavLinks />
+              <HeaderAuth />
+            </div>
           </div>
         </header>
         {children}
