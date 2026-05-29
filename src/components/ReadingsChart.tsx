@@ -1,7 +1,7 @@
 "use client";
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -17,15 +17,15 @@ export type ChartReading = {
 };
 
 const KINDS = [
-  { key: "electricity", label: "Electricity", unit: "kWh", color: "#20F29B" },
-  { key: "gas", label: "Gas", unit: "m3", color: "#f59e0b" },
-  { key: "water", label: "Water", unit: "m3", color: "#06b6d4" },
+  { key: "electricity", label: "Electricity", unit: "kWh", color: "#a78bfa", fill: true },
+  { key: "gas",         label: "Gas",         unit: "m3",  color: "#f87171", fill: true },
+  { key: "water",       label: "Water",        unit: "m3",  color: "#06b6d4", fill: false },
 ] as const;
 
 export default function ReadingsChart({ readings }: { readings: ChartReading[] }) {
   return (
     <div className="grid gap-6 sm:grid-cols-3">
-      {KINDS.map(({ key, label, unit, color }) => {
+      {KINDS.map(({ key, label, unit, color, fill }) => {
         const data = readings
           .filter((r) => r.kind === key)
           .sort((a, b) => a.readAt.localeCompare(b.readAt));
@@ -38,7 +38,13 @@ export default function ReadingsChart({ readings }: { readings: ChartReading[] }
               {label} ({unit})
             </h3>
             <ResponsiveContainer width="100%" height={180}>
-              <LineChart data={data} margin={{ top: 4, right: 8, bottom: 4, left: 8 }}>
+              <AreaChart data={data} margin={{ top: 4, right: 8, bottom: 4, left: 8 }}>
+                <defs>
+                  <linearGradient id={`fill-${key}`} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={color} stopOpacity={0.3} />
+                    <stop offset="95%" stopColor={color} stopOpacity={0} />
+                  </linearGradient>
+                </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#CABBE740" />
                 <XAxis
                   dataKey="readAt"
@@ -66,14 +72,15 @@ export default function ReadingsChart({ readings }: { readings: ChartReading[] }
                   labelFormatter={(s) => new Date(s).toLocaleDateString()}
                   formatter={(v) => [`${String(v)} ${unit}`, label]}
                 />
-                <Line
+                <Area
                   type="monotone"
                   dataKey="value"
                   stroke={color}
                   strokeWidth={2}
+                  fill={fill ? `url(#fill-${key})` : "transparent"}
                   dot={false}
                 />
-              </LineChart>
+              </AreaChart>
             </ResponsiveContainer>
           </div>
         );
