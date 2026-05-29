@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import ReadingsChart, { type ChartReading } from "@/components/ReadingsChart";
 
 export default async function Home() {
   const readings = await prisma.meterReading.findMany({
@@ -7,16 +9,44 @@ export default async function Home() {
     include: { user: { select: { name: true, email: true } } },
   });
 
+  const allReadings = await prisma.meterReading.findMany({
+    orderBy: { readAt: "asc" },
+    select: { readAt: true, kind: true, value: true, unit: true },
+  });
+  const chartData: ChartReading[] = allReadings.map((r) => ({
+    readAt: r.readAt.toISOString(),
+    kind: r.kind,
+    value: r.value,
+    unit: r.unit,
+  }));
+
   return (
     <main className="mx-auto w-full max-w-4xl px-6 py-12 sm:py-16">
       <header className="mb-10 border-l-4 border-[#20F29B] pl-4">
-        <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl text-hw-off-white">
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-hw-off-white sm:text-4xl">
           HomeWizard Dashboard.
         </h1>
         <p className="mt-3 max-w-2xl text-sm text-hw-border">
           Your energy usage at a glance.
         </p>
       </header>
+
+      <section className="mb-10">
+        <h2 className="mb-3 font-display text-xl font-semibold text-hw-off-white">
+          Meter readings.
+        </h2>
+        {chartData.length > 0 ? (
+          <ReadingsChart readings={chartData} />
+        ) : (
+          <p className="text-sm text-hw-off-white/70">
+            No readings yet.{" "}
+            <Link href="/upload" className="underline underline-offset-4">
+              Import a CSV
+            </Link>{" "}
+            to get started.
+          </p>
+        )}
+      </section>
 
       <section>
         <h2 className="mb-3 font-display text-xl font-semibold text-hw-off-white">
